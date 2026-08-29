@@ -1,12 +1,75 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { FormEvent, Suspense, useEffect, useState } from "react";
 import { Button } from "./ui";
 import { Brand } from "./Brand";
 import { useRole } from "@/lib/session";
 import { cx } from "@/lib/util";
+
+function marketplaceHref(query: string) {
+  const q = query.trim();
+  return q ? `/buyer/marketplace?q=${encodeURIComponent(q)}` : "/buyer/marketplace";
+}
+
+function SearchField({ className, autoFocus }: { className?: string; autoFocus?: boolean }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const onMarketplace = pathname?.startsWith("/buyer/marketplace") ?? false;
+  const urlQuery = onMarketplace ? (searchParams.get("q") ?? "") : "";
+  const [query, setQuery] = useState(urlQuery);
+
+  useEffect(() => {
+    setQuery(urlQuery);
+  }, [urlQuery]);
+
+  function go(next: string, replace = false) {
+    const href = marketplaceHref(next);
+    if (replace) router.replace(href);
+    else router.push(href);
+  }
+
+  function onSubmit(e: FormEvent) {
+    e.preventDefault();
+    go(query);
+  }
+
+  return (
+    <form onSubmit={onSubmit} className={className} role="search">
+      <label className="block w-full">
+        <input
+          className="h-10 w-full rounded-pill border border-line bg-page px-4 text-[14px] outline-none focus:border-action focus:bg-white"
+          placeholder="Search phones, laptops, furniture…"
+          aria-label="Search products"
+          value={query}
+          autoFocus={autoFocus}
+          onChange={(e) => {
+            const next = e.target.value;
+            setQuery(next);
+            if (onMarketplace) go(next, true);
+          }}
+        />
+      </label>
+    </form>
+  );
+}
+
+function SearchFieldFallback({ className }: { className?: string }) {
+  return (
+    <div className={className}>
+      <label className="block w-full">
+        <input
+          className="h-10 w-full rounded-pill border border-line bg-page px-4 text-[14px] outline-none focus:border-action focus:bg-white"
+          placeholder="Search phones, laptops, furniture…"
+          aria-label="Search products"
+          readOnly
+        />
+      </label>
+    </div>
+  );
+}
 
 export function MarketplaceNav() {
   const pathname = usePathname();
@@ -43,13 +106,9 @@ export function MarketplaceNav() {
         </nav>
 
         <div className="ml-auto hidden min-w-0 flex-1 justify-center px-4 lg:flex">
-          <label className="w-full max-w-md">
-            <input
-              className="h-10 w-full rounded-pill border border-line bg-page px-4 text-[14px] outline-none focus:border-action focus:bg-white"
-              placeholder="Search phones, laptops, furniture…"
-              aria-label="Search products"
-            />
-          </label>
+          <Suspense fallback={<SearchFieldFallback className="w-full max-w-md" />}>
+            <SearchField className="w-full max-w-md" />
+          </Suspense>
         </div>
 
         <div className="ml-auto flex items-center gap-3 lg:ml-0">
@@ -108,6 +167,11 @@ export function MarketplaceNav() {
               Orders
             </Link>
           )}
+          <div className="mt-2 lg:hidden">
+            <Suspense fallback={<SearchFieldFallback />}>
+              <SearchField />
+            </Suspense>
+          </div>
           <Button href={sellHref} full className="mt-2">
             {sellLabel}
           </Button>

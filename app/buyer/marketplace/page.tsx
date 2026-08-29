@@ -1,21 +1,31 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { MarketplaceNav } from "@/components/MarketplaceNav";
 import { ProductCard } from "@/components/ProductCard";
 import { Button, Chip } from "@/components/ui";
-import { CATEGORIES, PRODUCTS } from "@/lib/data";
+import { CATEGORIES, PRODUCTS, type Product } from "@/lib/data";
 
-export default function Marketplace() {
+function matchesQuery(product: Product, query: string) {
+  const q = query.trim().toLowerCase();
+  if (!q) return true;
+  const haystack = [product.title, product.seller, product.category, product.condition].join(" ").toLowerCase();
+  return haystack.includes(q);
+}
+
+function MarketplaceResults() {
+  const searchParams = useSearchParams();
+  const query = searchParams.get("q") ?? "";
   const [cat, setCat] = useState("All");
   const [sort, setSort] = useState<"reco" | "low" | "high">("reco");
 
   const products = useMemo(() => {
-    let list = cat === "All" ? PRODUCTS : PRODUCTS.filter((p) => p.category === cat);
+    let list = PRODUCTS.filter((p) => (cat === "All" || p.category === cat) && matchesQuery(p, query));
     if (sort === "low") list = [...list].sort((a, b) => a.price - b.price);
     if (sort === "high") list = [...list].sort((a, b) => b.price - a.price);
     return list;
-  }, [cat, sort]);
+  }, [cat, sort, query]);
 
   return (
     <div className="min-h-dvh bg-page">
@@ -65,7 +75,9 @@ export default function Marketplace() {
         </div>
 
         <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
-          <h3 className="text-[20px] font-bold text-ink">Recommended for you</h3>
+          <h3 className="text-[20px] font-bold text-ink">
+            {query.trim() ? `Results for “${query.trim()}”` : "Recommended for you"}
+          </h3>
           <label className="flex items-center gap-2 text-[13px] text-ink-muted">
             {products.length} products · Sort:
             <select
@@ -80,12 +92,26 @@ export default function Marketplace() {
           </label>
         </div>
 
-        <div className="mt-5 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-          {products.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
-        </div>
+        {products.length === 0 ? (
+          <p className="mt-8 rounded-card border border-line bg-surface px-4 py-8 text-center text-[15px] text-ink-secondary">
+            No products match “{query.trim()}”. Try another search or category.
+          </p>
+        ) : (
+          <div className="mt-5 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+            {products.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        )}
       </main>
     </div>
+  );
+}
+
+export default function Marketplace() {
+  return (
+    <Suspense>
+      <MarketplaceResults />
+    </Suspense>
   );
 }
