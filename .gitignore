@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+.DS_Store
+*.log
+.env*.local
+next-env.d.ts
+.vercel
+
+# macOS AppleDouble files (external volume)
+._*
+.AppleDouble
+.LSOverride

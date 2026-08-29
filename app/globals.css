@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --pyt-color-action-primary: #2563eb;
+  --pyt-color-text-primary: #171a1f;
+  --pyt-color-text-secondary: #4f555e;
+  --pyt-color-text-muted: #969ca6;
+  --pyt-color-bg-page: #f8f8f5;
+  --pyt-color-bg-surface: #ffffff;
+  --pyt-color-bg-accent-soft: #eef4ff;
+  --pyt-color-border-default: #e4e6e8;
+  --pyt-color-trust-default: #168a55;
+  --pyt-color-warning-default: #d68a00;
+  --pyt-color-warning-soft: #fff6df;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--pyt-color-bg-page);
+    color: var(--pyt-color-text-primary);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: #dbe6ff;
+  }
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer components {
+  .pyt-input {
+    @apply h-12 w-full rounded-control border border-line bg-page px-3.5 text-[15px] text-ink
+      outline-none transition placeholder:text-ink-muted
+      focus:border-action focus:bg-white focus:ring-4 focus:ring-action/10;
+  }
+  .pyt-label {
+    @apply mb-1.5 block text-[13px] font-semibold text-ink-secondary;
+  }
+  .pyt-card {
+    @apply rounded-card border border-line bg-surface shadow-subtle;
+  }
+  .pyt-section-title {
+    @apply text-[22px] font-bold tracking-[-0.01em] text-ink;
+  }
+}
+
+/* Smooth scroll for in-page anchors, respect reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
