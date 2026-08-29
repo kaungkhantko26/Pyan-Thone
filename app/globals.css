@@ -21,6 +21,7 @@
     -webkit-text-size-adjust: 100%;
   }
   body {
+    @apply font-sans;
     background: var(--pyt-color-bg-page);
     color: var(--pyt-color-text-primary);
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";

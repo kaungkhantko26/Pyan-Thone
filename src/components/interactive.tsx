@@ -6,7 +6,15 @@ import { Button, PhotoTile } from "./ui";
 import { cx, mmk } from "@/lib/util";
 
 /* ------------------------------------------------------------------ OTP */
-export function OtpInput({ length = 6 }: { length?: number }) {
+type OtpLabels = { expires: string; resend: string; complete: string; warn: string };
+const OTP_DEFAULT: OtpLabels = {
+  expires: "Code expires in 04:32",
+  resend: "Resend code",
+  complete: "✓ Code complete — ready to verify",
+  warn: "Never share this code with a seller, buyer, or support agent.",
+};
+
+export function OtpInput({ length = 6, labels = OTP_DEFAULT }: { length?: number; labels?: OtpLabels }) {
   const [values, setValues] = useState<string[]>(Array(length).fill(""));
   const refs = useRef<Array<HTMLInputElement | null>>([]);
 
@@ -50,11 +58,11 @@ export function OtpInput({ length = 6 }: { length?: number }) {
         ))}
       </div>
       <div className="mt-2 flex justify-between text-[12px]">
-        <span className="text-ink-muted">Code expires in 04:32</span>
-        <button className="font-semibold text-action">Resend code</button>
+        <span className="text-ink-muted">{labels.expires}</span>
+        <button className="font-semibold text-action">{labels.resend}</button>
       </div>
       <p className={cx("mt-2 text-[12px]", filled ? "text-trust" : "text-ink-muted")}>
-        {filled ? "✓ Code complete — ready to verify" : "Never share this code with a seller, buyer, or support agent."}
+        {filled ? labels.complete : labels.warn}
       </p>
     </div>
   );

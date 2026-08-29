@@ -1,12 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import { Brand } from "./Brand";
+import { LangToggle } from "./LangToggle";
+import { useI18n } from "@/lib/i18n";
 
 export function AuthShell({
   steps,
   activeStep,
   children,
 }: {
-  /** Panel-only marketing props are accepted for compatibility but no longer rendered. */
   eyebrow?: string;
   headline?: string;
   blurb?: string;
@@ -15,15 +18,17 @@ export function AuthShell({
   activeStep?: number;
   children: React.ReactNode;
 }) {
+  const { t } = useI18n();
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center bg-page px-4 py-10 sm:px-6">
       <div className="w-full max-w-[460px]">
-        <div className="mb-6 flex justify-center">
-          <Brand size={40} />
+        <div className="mb-6 flex items-center justify-between">
+          <Brand size={36} />
+          <LangToggle />
         </div>
 
         {steps && (
-          <ol className="mb-4 flex items-center justify-center gap-2 text-[12px] font-semibold text-ink-muted">
+          <ol className="mb-4 flex items-center gap-2 text-[12px] font-semibold text-ink-muted">
             {steps.map((s, i) => (
               <li
                 key={s}
@@ -45,7 +50,7 @@ export function AuthShell({
 
         <p className="mt-6 text-center text-[12px] text-ink-muted">
           <Link href="/" className="hover:text-ink">
-            ← Back to Pyan Thone
+            {t.auth.backHome}
           </Link>
         </p>
       </div>

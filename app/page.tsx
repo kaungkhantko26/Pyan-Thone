@@ -1,80 +1,182 @@
+"use client";
+
 import Link from "next/link";
-import { Button } from "@/components/ui";
+import { LandingNav } from "@/components/LandingNav";
 import { Brand } from "@/components/Brand";
+import { Button, PhotoTile } from "@/components/ui";
+import { LangToggle } from "@/components/LangToggle";
+import { useI18n } from "@/lib/i18n";
+import { PRODUCTS } from "@/lib/data";
 
-const FLOWS = [
-  {
-    title: "Buyer",
-    blurb: "Browse trusted products, view condition reports, chat, make offers, and track delivery.",
-    href: "/buyer/login",
-    screens: ["Login", "Sign up", "Choose role", "Phone OTP", "Marketplace", "Product detail", "Seller profile", "Chat & offer", "Checkout", "Delivery tracking"],
-  },
-  {
-    title: "Seller",
-    blurb: "Set up a storefront, verify identity, publish listings, and manage orders from a dashboard.",
-    href: "/seller/login",
-    screens: ["Login", "Sign up", "Seller setup", "Identity verification", "Phone OTP", "Dashboard", "Seller profile", "Chat & offer", "Listing preview"],
-  },
-  {
-    title: "Admin",
-    blurb: "Moderate accounts, review seller identity, investigate flagged chats, and contact users.",
-    href: "/admin/login",
-    screens: ["Admin login", "Console", "Chat review", "Email composer", "Ban review"],
-  },
-];
+const STAT_VALUES = ["2,840", "12,600", "4.8"];
 
-export default function Cover() {
+export default function Landing() {
+  const { t } = useI18n();
+  const stats = [
+    { value: STAT_VALUES[0], label: t.stats.sellers },
+    { value: STAT_VALUES[1], label: t.stats.reused },
+    { value: STAT_VALUES[2], label: t.stats.rating },
+  ];
+  const offerings = [
+    { ...t.products.buyers, href: "/buyer/marketplace" },
+    { ...t.products.sellers, href: "/seller/dashboard" },
+  ];
+
   return (
     <div className="min-h-dvh bg-page">
-      <div className="mx-auto max-w-content px-4 py-16 sm:px-6 lg:px-8">
-        <Brand href={null} size={56} wordmark={false} className="mb-6" />
-        <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-action">
-          Trusted second-hand marketplace
-        </p>
-        <h1 className="mt-4 text-[clamp(2.5rem,7vw,5rem)] font-extrabold leading-[1.02] tracking-tight text-ink">
-          Pyan Thone
-        </h1>
-        <p className="mt-5 max-w-2xl text-[18px] leading-relaxed text-ink-secondary">
-          Give things a second life — with condition transparency and seller trust. A responsive,
-          installable PWA built from the Figma design.
-        </p>
-        <p className="mt-2 text-[14px] text-ink-muted">
-          Hackathon UI/UX · Desktop &amp; mobile marketplace flow · August 2026
-        </p>
+      <LandingNav />
 
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Button href="/buyer/marketplace" size="md">
-            Enter marketplace
-          </Button>
-          <Button href="/seller/dashboard" variant="secondary" size="md">
-            Seller dashboard
-          </Button>
+      {/* Hero / Home */}
+      <section id="home" className="relative overflow-hidden border-b border-line bg-action-soft">
+        <div className="mx-auto grid max-w-content items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:py-24 lg:px-8">
+          <div>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-action">
+              {t.hero.eyebrow}
+            </p>
+            <h1 className="mt-4 text-[clamp(2.25rem,5.5vw,3.75rem)] font-extrabold leading-[1.05] tracking-tight text-ink">
+              {t.hero.title}
+            </h1>
+            <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-ink-secondary sm:text-[17px]">
+              {t.hero.desc}
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Button href="/buyer/login" size="md">
+                {t.hero.primary}
+              </Button>
+              <Button href="/buyer/marketplace" variant="secondary" size="md">
+                {t.hero.secondary}
+              </Button>
+            </div>
+
+            <dl className="mt-10 grid max-w-md grid-cols-3 gap-4">
+              {stats.map((s) => (
+                <div key={s.label}>
+                  <dt className="text-[22px] font-extrabold tracking-tight text-ink">{s.value}</dt>
+                  <dd className="mt-0.5 text-[12px] leading-tight text-ink-muted">{s.label}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <div className="relative hidden lg:block">
+            <div className="rounded-card border border-line bg-surface p-6 shadow-card">
+              <div className="flex items-center gap-3">
+                <PhotoTile className="h-11 w-11 shrink-0" />
+                <div>
+                  <p className="text-[14px] font-bold text-ink">Apple iPhone 14 Pro</p>
+                  <p className="text-[12px] text-ink-muted">1,250,000 MMK · 2.4 km away</p>
+                </div>
+              </div>
+              <div className="mt-4 grid grid-cols-3 gap-2">
+                {PRODUCTS.slice(0, 3).map((p) => (
+                  <div key={p.id} className="rounded-control bg-action-soft p-2 text-center">
+                    <div className="mb-1 aspect-square rounded bg-white/70" />
+                    <span className="text-[10px] font-medium text-ink-secondary">{p.condition}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 rounded-control bg-[#e6f4ec]/70 p-3 text-[12px] font-semibold text-trust">
+                ✓ Trust score 92 / 100 · Identity verified
+              </div>
+            </div>
+          </div>
         </div>
+      </section>
 
-        <div className="mt-14 grid gap-5 md:grid-cols-3">
-          {FLOWS.map((f) => (
-            <div key={f.title} className="flex flex-col rounded-card border border-line bg-surface p-6 shadow-subtle">
-              <h2 className="text-[20px] font-bold text-ink">{f.title}</h2>
-              <p className="mt-2 flex-1 text-[14px] leading-relaxed text-ink-secondary">{f.blurb}</p>
-              <ul className="mt-4 space-y-1 text-[13px] text-ink-muted">
-                {f.screens.map((s) => (
-                  <li key={s}>· {s}</li>
+      {/* Products */}
+      <section id="products" className="mx-auto max-w-content px-4 py-16 sm:px-6 lg:py-20 lg:px-8">
+        <h2 className="pyt-section-title text-[26px]">{t.products.title}</h2>
+        <p className="mt-2 text-[15px] text-ink-secondary">{t.products.subtitle}</p>
+
+        <div className="mt-8 grid gap-5 md:grid-cols-2">
+          {offerings.map((o) => (
+            <div key={o.title} className="flex flex-col rounded-card border border-line bg-surface p-7 shadow-subtle">
+              <h3 className="text-[20px] font-bold text-ink">{o.title}</h3>
+              <p className="mt-2 text-[14px] leading-relaxed text-ink-secondary">{o.desc}</p>
+              <ul className="mt-5 space-y-2 text-[13px] text-ink-secondary">
+                {o.points.map((p) => (
+                  <li key={p} className="flex gap-2">
+                    <span className="mt-0.5 text-trust">✓</span>
+                    {p}
+                  </li>
                 ))}
               </ul>
-              <Button href={f.href} variant="secondary" size="sm" className="mt-5 self-start">
-                Open {f.title.toLowerCase()} flow
+              <Button href={o.href} variant="secondary" size="sm" className="mt-6 self-start">
+                {o.cta}
               </Button>
             </div>
           ))}
         </div>
+      </section>
 
-        <footer className="mt-16 border-t border-line pt-6 text-[13px] text-ink-muted">
-          <Link href="/buyer/marketplace" className="hover:text-ink">
-            Pyan Thone
-          </Link>{" "}
-          · Built with Next.js + Tailwind · Installable offline-capable PWA
-        </footer>
-      </div>
+      {/* About us — Problem & Solution */}
+      <section id="about" className="border-y border-line bg-surface">
+        <div className="mx-auto max-w-content px-4 py-16 sm:px-6 lg:py-20 lg:px-8">
+          <h2 className="pyt-section-title text-[26px]">{t.about.title}</h2>
+          <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-ink-secondary">{t.about.lead}</p>
+
+          <div className="mt-8 grid gap-5 lg:grid-cols-2">
+            <div className="rounded-card border border-warning/30 bg-warning-soft/50 p-7">
+              <span className="text-[12px] font-semibold uppercase tracking-wide text-warning">
+                {t.about.problemTag}
+              </span>
+              <h3 className="mt-2 text-[19px] font-bold text-ink">{t.about.problemTitle}</h3>
+              <p className="mt-3 text-[14px] leading-relaxed text-ink-secondary">{t.about.problemBody}</p>
+            </div>
+
+            <div className="rounded-card border border-trust/25 bg-[#e6f4ec]/40 p-7">
+              <span className="text-[12px] font-semibold uppercase tracking-wide text-trust">
+                {t.about.solutionTag}
+              </span>
+              <h3 className="mt-2 text-[19px] font-bold text-ink">{t.about.solutionTitle}</h3>
+              <ul className="mt-3 space-y-2.5 text-[14px] leading-relaxed text-ink-secondary">
+                {t.about.solutionPoints.map((p) => (
+                  <li key={p} className="flex gap-2">
+                    <span className="mt-0.5 text-trust">✓</span>
+                    {p}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="mx-auto max-w-content px-4 py-16 text-center sm:px-6 lg:py-24 lg:px-8">
+        <h2 className="mx-auto max-w-2xl text-[clamp(1.6rem,4vw,2.4rem)] font-extrabold tracking-tight text-ink">
+          {t.cta.title}
+        </h2>
+        <p className="mt-3 text-[15px] text-ink-secondary">{t.cta.desc}</p>
+        <Button href="/buyer/login" size="md" className="mt-7">
+          {t.cta.button}
+        </Button>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-line bg-surface">
+        <div className="mx-auto flex max-w-content flex-col gap-4 px-4 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+          <div>
+            <Brand href="/" size={26} />
+            <p className="mt-2 text-[13px] text-ink-muted">{t.footer.tagline}</p>
+          </div>
+          <div className="flex flex-wrap items-center gap-4 text-[13px] text-ink-secondary">
+            <Link href="/buyer/marketplace" className="hover:text-ink">
+              {t.nav.forBuyers}
+            </Link>
+            <Link href="/seller/dashboard" className="hover:text-ink">
+              {t.nav.forSellers}
+            </Link>
+            <Link href="/buyer/login" className="hover:text-ink">
+              {t.nav.getStarted}
+            </Link>
+            <LangToggle />
+          </div>
+        </div>
+        <p className="border-t border-line px-4 py-4 text-center text-[12px] text-ink-muted sm:px-6 lg:px-8">
+          Pyan Thone · {t.footer.rights}
+        </p>
+      </footer>
     </div>
   );
 }

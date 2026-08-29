@@ -2,16 +2,11 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { AuthShell } from "./AuthShell";
 import { Button, Field } from "./ui";
 import { OtpInput } from "./interactive";
-import { useState } from "react";
-
-const BULLETS = [
-  "Condition evidence on every product",
-  "Transparent seller trust scores",
-  "Delivery status from order to arrival",
-];
+import { useI18n } from "@/lib/i18n";
 
 type Role = "buyer" | "seller" | "admin";
 
@@ -27,23 +22,17 @@ function paths(role: Role) {
 
 export function LoginPage({ role }: { role: Role }) {
   const router = useRouter();
+  const { t } = useI18n();
+  const L = t.auth.login;
   const p = paths(role);
+  const isAdmin = role === "admin";
+
   return (
-    <AuthShell
-      headline={role === "admin" ? "Protect the marketplace. Act with accountability." : "Buy with confidence. Sell in minutes."}
-      blurb={
-        role === "admin"
-          ? "Restricted access for authorized Pyan Thone moderation and support staff."
-          : "Verified sellers, transparent condition reports, and protected marketplace conversations."
-      }
-      bullets={role === "admin" ? ["Role-based admin permissions", "Every sensitive action is logged", "Chat access requires a case reason"] : BULLETS}
-    >
+    <AuthShell>
       <h2 className="text-[26px] font-bold tracking-tight text-ink">
-        {role === "admin" ? "Admin access" : "Welcome back"}
+        {isAdmin ? L.adminTitle : L.title}
       </h2>
-      <p className="mt-1 text-[14px] text-ink-secondary">
-        {role === "admin" ? "Sign in with your authorized admin credentials." : "Log in to continue buying and selling."}
-      </p>
+      <p className="mt-1 text-[14px] text-ink-secondary">{isAdmin ? L.adminSubtitle : L.subtitle}</p>
       <form
         className="mt-6 space-y-4"
         onSubmit={(e) => {
@@ -51,27 +40,23 @@ export function LoginPage({ role }: { role: Role }) {
           router.push(p.home);
         }}
       >
-        <Field label="Email or phone" type="text" placeholder="you@example.com" autoComplete="username" required />
-        <Field label="Password" type="password" placeholder="••••••••" autoComplete="current-password" required />
+        <Field label={L.emailLabel} type="text" placeholder="you@example.com" autoComplete="username" required />
+        <Field label={L.passwordLabel} type="password" placeholder="••••••••" autoComplete="current-password" required />
         <div className="flex items-center justify-between text-[13px]">
           <label className="flex items-center gap-2 text-ink-secondary">
-            <input type="checkbox" className="h-4 w-4 rounded border-line" /> Remember me
+            <input type="checkbox" className="h-4 w-4 rounded border-line" /> {L.remember}
           </label>
           <Link href="#" className="font-semibold text-action">
-            Forgot password?
+            {L.forgot}
           </Link>
         </div>
         <Button full type="submit">
-          {role === "admin" ? "Sign in securely" : "Log in"}
+          {isAdmin ? L.adminSubmit : L.submit}
         </Button>
-        <Button full variant="secondary" href={role === "admin" ? "/" : p.signup}>
-          {role === "admin" ? "Back to cover" : "Create account"}
+        <Button full variant="secondary" href={isAdmin ? "/" : p.signup}>
+          {isAdmin ? L.adminBack : L.alt}
         </Button>
-        <p className="text-[12px] text-ink-muted">
-          {role === "admin"
-            ? "Two-step verification and activity logging are required."
-            : "By continuing, you agree to the Terms and Privacy Policy."}
-        </p>
+        <p className="text-[12px] text-ink-muted">{isAdmin ? L.adminNote : L.terms}</p>
       </form>
     </AuthShell>
   );
@@ -79,15 +64,13 @@ export function LoginPage({ role }: { role: Role }) {
 
 export function SignupPage({ role }: { role: Role }) {
   const router = useRouter();
+  const { t } = useI18n();
+  const S = t.auth.signup;
   const p = paths(role);
   return (
-    <AuthShell
-      headline="Your next great find starts nearby."
-      blurb="One account works for buying and selling. Phone verification helps keep the local marketplace safer."
-      bullets={["Free to join · List in under 2 minutes"]}
-    >
-      <h2 className="text-[26px] font-bold tracking-tight text-ink">Create your account</h2>
-      <p className="mt-1 text-[14px] text-ink-secondary">Start buying or publish your first listing.</p>
+    <AuthShell>
+      <h2 className="text-[26px] font-bold tracking-tight text-ink">{S.title}</h2>
+      <p className="mt-1 text-[14px] text-ink-secondary">{S.subtitle}</p>
       <form
         className="mt-6 space-y-4"
         onSubmit={(e) => {
@@ -95,19 +78,18 @@ export function SignupPage({ role }: { role: Role }) {
           router.push(p.otp);
         }}
       >
-        <Field label="Full name" placeholder="Your name" autoComplete="name" required />
-        <Field label="Phone number" placeholder="+95 9 123 456 789" autoComplete="tel" required />
-        <Field label="Email" type="email" placeholder="you@example.com" autoComplete="email" required />
-        <Field label="Password" type="password" placeholder="At least 8 characters" minLength={8} required />
+        <Field label={S.nameLabel} placeholder={S.namePlaceholder} autoComplete="name" required />
+        <Field label={S.phoneLabel} placeholder="+95 9 123 456 789" autoComplete="tel" required />
+        <Field label={S.emailLabel} type="email" placeholder="you@example.com" autoComplete="email" required />
+        <Field label={S.passwordLabel} type="password" placeholder={S.passwordPlaceholder} minLength={8} required />
         <label className="flex items-start gap-2 text-[12px] text-ink-secondary">
-          <input type="checkbox" className="mt-0.5 h-4 w-4 rounded border-line" required /> I agree to the Terms, Privacy
-          Policy, and marketplace safety rules.
+          <input type="checkbox" className="mt-0.5 h-4 w-4 rounded border-line" required /> {S.agree}
         </label>
         <Button full type="submit">
-          Create account
+          {S.submit}
         </Button>
         <Button full variant="secondary" href={p.login}>
-          I already have an account
+          {S.alt}
         </Button>
       </form>
     </AuthShell>
@@ -116,26 +98,25 @@ export function SignupPage({ role }: { role: Role }) {
 
 export function OtpPage({ role }: { role: Role }) {
   const router = useRouter();
+  const { t } = useI18n();
+  const O = t.auth.otp;
   const p = paths(role);
   return (
-    <AuthShell
-      headline="A small step for safer trading."
-      blurb="Phone verification reduces fake accounts and gives buyers and sellers more confidence."
-    >
+    <AuthShell>
       <h2 className="text-[26px] font-bold tracking-tight text-ink">
-        {role === "seller" ? "Verify seller phone" : "Verify your phone"}
+        {role === "seller" ? O.sellerTitle : O.title}
       </h2>
-      <p className="mt-1 text-[14px] text-ink-secondary">We sent a 6-digit code to +95 9 ••• •• 6789.</p>
+      <p className="mt-1 text-[14px] text-ink-secondary">{O.subtitle}</p>
       <div className="mt-6">
-        <p className="pyt-label">Enter verification code</p>
-        <OtpInput />
+        <p className="pyt-label">{O.label}</p>
+        <OtpInput labels={{ expires: O.expires, resend: O.resend, complete: O.complete, warn: O.warn }} />
       </div>
       <div className="mt-6 space-y-3">
         <Button full onClick={() => router.push(p.next)}>
-          Verify and continue
+          {O.submit}
         </Button>
         <Button full variant="secondary" href={p.signup}>
-          Change phone number
+          {O.change}
         </Button>
       </div>
     </AuthShell>
@@ -144,19 +125,17 @@ export function OtpPage({ role }: { role: Role }) {
 
 export function ChooseRolePage() {
   const router = useRouter();
+  const { t } = useI18n();
+  const R = t.auth.role;
   const [role, setRole] = useState<"buyer" | "seller">("buyer");
   const options = [
-    { id: "buyer" as const, title: "Buyer", desc: "Browse trusted products, chat, make offers, track orders, and review sellers." },
-    { id: "seller" as const, title: "Seller", desc: "Create a shop, verify identity, publish listings, and manage customer orders." },
+    { id: "buyer" as const, title: R.buyer, desc: R.buyerDesc },
+    { id: "seller" as const, title: R.seller, desc: R.sellerDesc },
   ];
   return (
-    <AuthShell
-      eyebrow="Pyan Thone"
-      headline="Choose how you'll use the marketplace."
-      blurb="Buyer and seller accounts have different tools and verification requirements."
-    >
-      <h2 className="text-[26px] font-bold tracking-tight text-ink">Choose your role</h2>
-      <p className="mt-1 text-[14px] text-ink-secondary">You can add the other role later from account settings.</p>
+    <AuthShell>
+      <h2 className="text-[26px] font-bold tracking-tight text-ink">{R.title}</h2>
+      <p className="mt-1 text-[14px] text-ink-secondary">{R.subtitle}</p>
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
         {options.map((o) => (
           <button
@@ -180,14 +159,12 @@ export function ChooseRolePage() {
       </div>
       <div className="mt-6 space-y-3">
         <Button full onClick={() => router.push(role === "seller" ? "/seller/setup" : "/buyer/marketplace")}>
-          {role === "seller" ? "Set up seller account" : "Continue as buyer"}
+          {role === "seller" ? R.setupSeller : R.continueBuyer}
         </Button>
         <Button full variant="secondary" href="/buyer/otp">
-          Back
+          {R.back}
         </Button>
-        <p className="text-[12px] text-ink-muted">
-          Buyer accounts require phone verification. Seller accounts also require a verified identity document.
-        </p>
+        <p className="text-[12px] text-ink-muted">{R.note}</p>
       </div>
     </AuthShell>
   );

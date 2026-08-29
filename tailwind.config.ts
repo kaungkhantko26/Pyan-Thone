@@ -24,7 +24,13 @@ const config: Config = {
         card: "0 8px 30px -12px rgba(23,26,31,0.18)",
       },
       fontFamily: {
-        sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
+        sans: [
+          "var(--font-sans)",
+          "var(--font-myanmar)",
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif",
+        ],
       },
       maxWidth: { shell: "1440px", content: "1280px" },
     },
