@@ -3,10 +3,10 @@
 import Link from "next/link";
 import { LandingNav } from "@/components/LandingNav";
 import { Brand } from "@/components/Brand";
-import { Button, PhotoTile } from "@/components/ui";
+import { Button } from "@/components/ui";
 import { LangToggle } from "@/components/LangToggle";
 import { useI18n } from "@/lib/i18n";
-import { PRODUCTS } from "@/lib/data";
+import { BASE_PATH } from "@/lib/util";
 
 const STAT_VALUES = ["2,840", "12,600", "4.8"];
 
@@ -58,27 +58,19 @@ export default function Landing() {
             </dl>
           </div>
 
-          <div className="relative hidden lg:block">
-            <div className="rounded-card border border-line bg-surface p-6 shadow-card">
-              <div className="flex items-center gap-3">
-                <PhotoTile className="h-11 w-11 shrink-0" />
-                <div>
-                  <p className="text-[14px] font-bold text-ink">Apple iPhone 14 Pro</p>
-                  <p className="text-[12px] text-ink-muted">1,250,000 MMK · 2.4 km away</p>
-                </div>
-              </div>
-              <div className="mt-4 grid grid-cols-3 gap-2">
-                {PRODUCTS.slice(0, 3).map((p) => (
-                  <div key={p.id} className="rounded-control bg-action-soft p-2 text-center">
-                    <div className="mb-1 aspect-square rounded bg-white/70" />
-                    <span className="text-[10px] font-medium text-ink-secondary">{p.condition}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-4 rounded-control bg-[#e6f4ec]/70 p-3 text-[12px] font-semibold text-trust">
-                ✓ Trust score 92 / 100 · Identity verified
-              </div>
-            </div>
+          <div className="relative hidden items-center justify-center lg:flex">
+            <div
+              className="absolute h-72 w-72 rounded-full bg-action/10 blur-3xl"
+              aria-hidden
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`${BASE_PATH}/pt-logo.png`}
+              alt="Pyan Thone"
+              width={360}
+              height={288}
+              className="relative w-[min(360px,80%)] drop-shadow-[0_20px_40px_rgba(37,99,235,0.18)]"
+            />
           </div>
         </div>
       </section>
