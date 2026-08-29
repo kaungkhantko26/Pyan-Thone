@@ -58,3 +58,24 @@
     scroll-behavior: smooth;
   }
 }
+
+/* Burmese script: stacked consonants and below-base vowels collide with the
+   tight Latin line-heights and negative tracking, so relax them for `my`. */
+:root[data-lang="my"] body {
+  letter-spacing: normal;
+  line-height: 1.7;
+}
+:root[data-lang="my"] :is(h1, h2, h3, h4) {
+  line-height: 1.55;
+  letter-spacing: normal;
+  padding-block: 0.08em;
+}
+:root[data-lang="my"] p,
+:root[data-lang="my"] li {
+  line-height: 1.85;
+}
+:root[data-lang="my"] .pyt-label,
+:root[data-lang="my"] button,
+:root[data-lang="my"] a {
+  letter-spacing: normal;
+}

@@ -18,7 +18,7 @@ const en = {
   },
   hero: {
     eyebrow: "Trusted second-hand marketplace",
-    title: "Give things a second life.",
+    title: "Give your belongings a new life",
     desc: "Pyan Thone is a trusted second-hand marketplace with condition transparency and verified seller trust — buy and sell used products safely with people near you.",
     primary: "Get Started",
     secondary: "Browse marketplace",
@@ -69,7 +69,7 @@ const en = {
     ],
   },
   cta: {
-    title: "Ready to give things a second life?",
+    title: "Ready to give your belongings a new life?",
     desc: "Create your account and start buying or selling in minutes.",
     button: "Get Started",
   },

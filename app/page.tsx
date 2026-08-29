@@ -6,12 +6,13 @@ import { Brand } from "@/components/Brand";
 import { Button } from "@/components/ui";
 import { LangToggle } from "@/components/LangToggle";
 import { useI18n } from "@/lib/i18n";
-import { BASE_PATH } from "@/lib/util";
+import { BASE_PATH, cx } from "@/lib/util";
 
 const STAT_VALUES = ["2,840", "12,600", "4.8"];
 
 export default function Landing() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
+  const isMy = lang === "my";
   const stats = [
     { value: STAT_VALUES[0], label: t.stats.sellers },
     { value: STAT_VALUES[1], label: t.stats.reused },
@@ -33,7 +34,14 @@ export default function Landing() {
             <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-action">
               {t.hero.eyebrow}
             </p>
-            <h1 className="mt-4 text-[clamp(2.25rem,5.5vw,3.75rem)] font-extrabold leading-[1.05] tracking-tight text-ink">
+            <h1
+              className={cx(
+                "mt-4 font-extrabold text-ink",
+                isMy
+                  ? "text-[clamp(1.9rem,4.6vw,3rem)] leading-[1.6] tracking-normal"
+                  : "text-[clamp(2.25rem,5.5vw,3.75rem)] leading-[1.05] tracking-tight",
+              )}
+            >
               {t.hero.title}
             </h1>
             <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-ink-secondary sm:text-[17px]">

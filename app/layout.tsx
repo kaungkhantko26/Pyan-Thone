@@ -7,7 +7,7 @@ import { LanguageProvider } from "@/lib/i18n";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 const myanmar = Noto_Sans_Myanmar({
   subsets: ["myanmar"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
   variable: "--font-myanmar",
   display: "swap",
 });
@@ -17,7 +17,7 @@ const BP = process.env.NEXT_PUBLIC_BASE_PATH || "";
 export const metadata: Metadata = {
   title: "Pyan Thone — Trusted second-hand marketplace",
   description:
-    "Give things a second life. Buy and sell trusted second-hand products with condition transparency and verified seller trust.",
+    "Give your belongings a new life. Buy and sell trusted second-hand products with condition transparency and verified seller trust.",
   manifest: `${BP}/manifest.webmanifest`,
   applicationName: "Pyan Thone",
   appleWebApp: { capable: true, statusBarStyle: "default", title: "Pyan Thone" },

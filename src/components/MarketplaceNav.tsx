@@ -25,7 +25,7 @@ export function MarketplaceNav() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-surface/90 backdrop-blur">
       <div className="mx-auto flex h-[68px] max-w-content items-center gap-4 px-4 sm:px-6 lg:px-8">
-        <Brand href="/buyer/marketplace" size={30} />
+        <Brand href="/" size={30} />
 
         <nav className="ml-4 hidden items-center gap-5 md:flex">
           {links.map((l) => (

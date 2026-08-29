@@ -28,7 +28,7 @@ export default function Marketplace() {
               Buy local · Reuse more
             </p>
             <h1 className="mt-3 text-[clamp(2rem,5vw,3.25rem)] font-extrabold leading-[1.05] tracking-tight text-ink">
-              Give things a second life.
+              Give your belongings a new life.
             </h1>
             <p className="mt-4 text-[16px] leading-relaxed text-ink-secondary">
               Buy and sell trusted second-hand products from people around you.
