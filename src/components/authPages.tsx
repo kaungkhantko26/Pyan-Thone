@@ -7,8 +7,7 @@ import { AuthShell } from "./AuthShell";
 import { Button, Field } from "./ui";
 import { OtpInput } from "./interactive";
 import { useI18n } from "@/lib/i18n";
-
-type Role = "buyer" | "seller" | "admin";
+import { setRole, type Role } from "@/lib/session";
 
 function paths(role: Role) {
   return {
@@ -16,7 +15,8 @@ function paths(role: Role) {
     signup: `/${role}/signup`,
     otp: `/${role}/otp`,
     home: role === "seller" ? "/seller/dashboard" : role === "admin" ? "/admin/console" : "/buyer/marketplace",
-    next: role === "seller" ? "/seller/dashboard" : "/buyer/choose-role",
+    // after phone verification
+    next: role === "seller" ? "/seller/setup" : "/buyer/marketplace",
   };
 }
 
@@ -37,6 +37,7 @@ export function LoginPage({ role }: { role: Role }) {
         className="mt-6 space-y-4"
         onSubmit={(e) => {
           e.preventDefault();
+          setRole(role);
           router.push(p.home);
         }}
       >
@@ -75,6 +76,7 @@ export function SignupPage({ role }: { role: Role }) {
         className="mt-6 space-y-4"
         onSubmit={(e) => {
           e.preventDefault();
+          setRole(role);
           router.push(p.otp);
         }}
       >
@@ -158,10 +160,16 @@ export function ChooseRolePage() {
         ))}
       </div>
       <div className="mt-6 space-y-3">
-        <Button full onClick={() => router.push(role === "seller" ? "/seller/setup" : "/buyer/marketplace")}>
+        <Button
+          full
+          onClick={() => {
+            setRole(role);
+            router.push(role === "seller" ? "/seller/setup" : "/buyer/marketplace");
+          }}
+        >
           {role === "seller" ? R.setupSeller : R.continueBuyer}
         </Button>
-        <Button full variant="secondary" href="/buyer/otp">
+        <Button full variant="secondary" href="/">
           {R.back}
         </Button>
         <p className="text-[12px] text-ink-muted">{R.note}</p>

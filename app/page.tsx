@@ -19,7 +19,7 @@ export default function Landing() {
   ];
   const offerings = [
     { ...t.products.buyers, href: "/buyer/marketplace" },
-    { ...t.products.sellers, href: "/seller/dashboard" },
+    { ...t.products.sellers, href: "/seller/login" },
   ];
 
   return (
@@ -164,7 +164,7 @@ export default function Landing() {
             <Link href="/buyer/marketplace" className="hover:text-ink">
               {t.nav.forBuyers}
             </Link>
-            <Link href="/seller/dashboard" className="hover:text-ink">
+            <Link href="/seller/login" className="hover:text-ink">
               {t.nav.forSellers}
             </Link>
             <Link href="/buyer/login" className="hover:text-ink">

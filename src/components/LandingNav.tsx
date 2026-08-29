@@ -15,7 +15,7 @@ export function LandingNav() {
 
   const products = [
     { label: t.nav.forBuyers, href: "/buyer/marketplace", desc: t.products.buyers.desc },
-    { label: t.nav.forSellers, href: "/seller/dashboard", desc: t.products.sellers.desc },
+    { label: t.nav.forSellers, href: "/seller/login", desc: t.products.sellers.desc },
   ];
 
   return (

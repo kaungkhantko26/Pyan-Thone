@@ -19,24 +19,32 @@ export function OtpInput({ length = 6, labels = OTP_DEFAULT }: { length?: number
   const refs = useRef<Array<HTMLInputElement | null>>([]);
 
   function set(i: number, v: string) {
-    const digit = v.replace(/\D/g, "").slice(-1);
+    const digits = v.replace(/\D/g, "");
+    if (!digits) {
+      setValues((prev) => prev.map((d, idx) => (idx === i ? "" : d)));
+      return;
+    }
     setValues((prev) => {
       const next = [...prev];
-      next[i] = digit;
+      // support paste of the full code into any box
+      for (let k = 0; k < digits.length && i + k < length; k++) next[i + k] = digits[k];
       return next;
     });
-    if (digit && i < length - 1) refs.current[i + 1]?.focus();
+    const landed = Math.min(i + digits.length, length - 1);
+    refs.current[landed]?.focus();
   }
 
   function onKeyDown(i: number, e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Backspace" && !values[i] && i > 0) refs.current[i - 1]?.focus();
+    if (e.key === "ArrowLeft" && i > 0) refs.current[i - 1]?.focus();
+    if (e.key === "ArrowRight" && i < length - 1) refs.current[i + 1]?.focus();
   }
 
   const filled = values.every(Boolean);
 
   return (
     <div>
-      <div className="flex gap-2.5">
+      <div className="grid grid-cols-6 gap-2">
         {values.map((val, i) => (
           <input
             key={i}
@@ -45,12 +53,14 @@ export function OtpInput({ length = 6, labels = OTP_DEFAULT }: { length?: number
             }}
             value={val}
             inputMode="numeric"
-            maxLength={1}
+            autoComplete="one-time-code"
+            size={1}
+            maxLength={length}
             aria-label={`Digit ${i + 1}`}
             onChange={(e) => set(i, e.target.value)}
             onKeyDown={(e) => onKeyDown(i, e)}
             className={cx(
-              "h-16 flex-1 rounded-control border bg-page text-center text-[24px] font-bold outline-none transition",
+              "h-12 w-full min-w-0 rounded-control border bg-page px-0 text-center text-[20px] font-bold outline-none transition sm:h-14 sm:text-[22px]",
               val ? "border-action bg-white text-ink" : "border-line text-ink-muted",
               "focus:border-action focus:bg-white focus:ring-4 focus:ring-action/10",
             )}

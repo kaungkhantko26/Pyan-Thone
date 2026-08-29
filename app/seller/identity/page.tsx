@@ -60,7 +60,7 @@ export default function Identity() {
       </div>
 
       <div className="mt-6 space-y-3">
-        <Button full onClick={() => router.push("/seller/otp")}>
+        <Button full onClick={() => router.push("/seller/dashboard")}>
           Submit for verification
         </Button>
         <Button full variant="secondary" href="/seller/setup">

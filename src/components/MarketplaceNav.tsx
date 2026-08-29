@@ -5,17 +5,22 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Button } from "./ui";
 import { Brand } from "./Brand";
+import { useRole } from "@/lib/session";
 import { cx } from "@/lib/util";
-
-const LINKS = [
-  { label: "Marketplace", href: "/buyer/marketplace" },
-  { label: "Categories", href: "/buyer/marketplace" },
-  { label: "Seller Dashboard", href: "/seller/dashboard" },
-];
 
 export function MarketplaceNav() {
   const pathname = usePathname();
+  const { role } = useRole();
   const [open, setOpen] = useState(false);
+
+  const isSeller = role === "seller";
+  const links = [
+    { label: "Marketplace", href: "/buyer/marketplace" },
+    { label: "Categories", href: "/buyer/marketplace" },
+    ...(isSeller ? [{ label: "Seller Dashboard", href: "/seller/dashboard" }] : []),
+  ];
+  const sellHref = isSeller ? "/seller/dashboard" : "/seller/login";
+  const sellLabel = isSeller ? "Dashboard" : "Sell an item";
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-surface/90 backdrop-blur">
@@ -23,7 +28,7 @@ export function MarketplaceNav() {
         <Brand href="/buyer/marketplace" size={30} />
 
         <nav className="ml-4 hidden items-center gap-5 md:flex">
-          {LINKS.map((l) => (
+          {links.map((l) => (
             <Link
               key={l.label}
               href={l.href}
@@ -48,14 +53,18 @@ export function MarketplaceNav() {
         </div>
 
         <div className="ml-auto flex items-center gap-3 lg:ml-0">
-          <Link href="/buyer/chat" className="hidden text-[14px] text-ink-secondary hover:text-ink sm:block">
-            Chat
-          </Link>
-          <Link href="/buyer/delivery" className="hidden text-[14px] text-ink-secondary hover:text-ink sm:block">
-            Orders
-          </Link>
-          <Button href="/seller/setup" size="sm" className="hidden sm:inline-flex">
-            + Sell item
+          {role && (
+            <Link href="/buyer/chat" className="hidden text-[14px] text-ink-secondary hover:text-ink sm:block">
+              Chat
+            </Link>
+          )}
+          {role && (
+            <Link href="/buyer/delivery" className="hidden text-[14px] text-ink-secondary hover:text-ink sm:block">
+              Orders
+            </Link>
+          )}
+          <Button href={sellHref} size="sm" className="hidden sm:inline-flex">
+            {sellLabel}
           </Button>
           <button
             aria-label="Menu"
@@ -71,7 +80,7 @@ export function MarketplaceNav() {
 
       {open && (
         <div className="border-t border-line bg-surface px-4 py-3 md:hidden">
-          {LINKS.map((l) => (
+          {links.map((l) => (
             <Link
               key={l.label}
               href={l.href}
@@ -81,8 +90,26 @@ export function MarketplaceNav() {
               {l.label}
             </Link>
           ))}
-          <Button href="/seller/setup" full className="mt-2">
-            + Sell item
+          {role && (
+            <Link
+              href="/buyer/chat"
+              className="block rounded-control px-2 py-2 text-[15px] text-ink-secondary hover:bg-page"
+              onClick={() => setOpen(false)}
+            >
+              Chat
+            </Link>
+          )}
+          {role && (
+            <Link
+              href="/buyer/delivery"
+              className="block rounded-control px-2 py-2 text-[15px] text-ink-secondary hover:bg-page"
+              onClick={() => setOpen(false)}
+            >
+              Orders
+            </Link>
+          )}
+          <Button href={sellHref} full className="mt-2">
+            {sellLabel}
           </Button>
         </div>
       )}
