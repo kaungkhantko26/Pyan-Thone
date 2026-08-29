@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui";
+import { Brand } from "@/components/Brand";
 
 const FLOWS = [
   {
@@ -26,6 +27,7 @@ export default function Cover() {
   return (
     <div className="min-h-dvh bg-page">
       <div className="mx-auto max-w-content px-4 py-16 sm:px-6 lg:px-8">
+        <Brand href={null} size={56} wordmark={false} className="mb-6" />
         <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-action">
           Trusted second-hand marketplace
         </p>

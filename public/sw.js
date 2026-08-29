@@ -1,6 +1,6 @@
 /* Pyan Thone service worker — offline-first app shell with network-first navigation. */
-const CACHE = "pyt-v1";
-const CORE = ["./", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png"];
+const CACHE = "pyt-v2";
+const CORE = ["./", "./manifest.webmanifest", "./logo.png", "./icons/icon-192.png", "./icons/icon-512.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));

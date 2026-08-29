@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Button } from "./ui";
+import { Brand } from "./Brand";
 import { cx } from "@/lib/util";
 
 const LINKS = [
@@ -19,9 +20,7 @@ export function MarketplaceNav() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-surface/90 backdrop-blur">
       <div className="mx-auto flex h-[68px] max-w-content items-center gap-4 px-4 sm:px-6 lg:px-8">
-        <Link href="/buyer/marketplace" className="text-lg font-extrabold tracking-tight text-action">
-          Pyan Thone
-        </Link>
+        <Brand href="/buyer/marketplace" size={30} />
 
         <nav className="ml-4 hidden items-center gap-5 md:flex">
           {LINKS.map((l) => (

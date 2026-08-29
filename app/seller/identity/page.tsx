@@ -19,6 +19,7 @@ export default function Identity() {
       headline="Verify once. Trade with confidence."
       blurb="Documents are visible only to authorized review staff and are never shown to buyers."
       steps={["Shop details", "Identity", "Phone OTP"]}
+      activeStep={1}
     >
       <h2 className="text-[24px] font-bold tracking-tight text-ink">Verify seller identity</h2>
       <p className="mt-1 text-[14px] text-ink-secondary">

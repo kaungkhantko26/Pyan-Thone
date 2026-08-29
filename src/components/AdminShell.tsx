@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { Brand } from "./Brand";
 import { ADMIN_NAV } from "@/lib/data";
 import { cx } from "@/lib/util";
 
@@ -26,8 +27,9 @@ export function AdminShell({ title, active, children }: { title: string; active:
               <path d="M4 7h16M4 12h16M4 17h16" />
             </svg>
           </button>
-          <Link href="/admin/console" className="text-[16px] font-extrabold text-ink">
-            Pyan Thone Admin
+          <Link href="/admin/console" className="flex items-center gap-2">
+            <Brand href={null} size={26} wordmark={false} />
+            <span className="text-[16px] font-extrabold text-ink">Pyan Thone Admin</span>
           </Link>
         </div>
         <p className="text-[13px] text-ink-muted">Admin Aye Aye · Secure session</p>

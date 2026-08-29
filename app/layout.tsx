@@ -15,8 +15,11 @@ export const metadata: Metadata = {
   applicationName: "Pyan Thone",
   appleWebApp: { capable: true, statusBarStyle: "default", title: "Pyan Thone" },
   icons: {
-    icon: `${BP}/icons/icon-192.png`,
-    apple: `${BP}/icons/icon-192.png`,
+    icon: [
+      { url: `${BP}/favicon-32.png`, sizes: "32x32", type: "image/png" },
+      { url: `${BP}/icons/icon-192.png`, sizes: "192x192", type: "image/png" },
+    ],
+    apple: `${BP}/apple-touch-icon.png`,
   },
 };
 
