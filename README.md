@@ -3,7 +3,8 @@
 Trusted second-hand marketplace — a responsive, installable **PWA** built from the Figma design
 (`R7N4mZjwxY4nX3wwW9lXUX`) using Next.js (App Router) + Tailwind CSS.
 
-**Live:** https://kaungkhantko26.github.io/Pyan-Thone/
+**Live (Vercel):** https://pyan-thone-sigma.vercel.app
+**Live (GitHub Pages):** https://kaungkhantko26.github.io/Pyan-Thone/
 
 ## Flows & screens
 
@@ -39,9 +40,14 @@ npm run dev
 npm run build   # outputs ./out
 ```
 
-`next.config.mjs` sets `output: "export"` and a `/Pyan-Thone` base path in production for
-GitHub Pages. Deployment runs automatically via `.github/workflows/deploy.yml` on push to `main`
-(enable **Settings → Pages → Source: GitHub Actions**).
+`next.config.mjs` always uses `output: "export"`. The `/Pyan-Thone` base path and
+`assetPrefix` are only applied when `GITHUB_PAGES=true` (set by `.github/workflows/deploy.yml`),
+so the two targets stay in sync:
+
+- **Vercel** — project `pyan-thone` linked to this repo; every push to `main` deploys to
+  production at the domain root. No base path.
+- **GitHub Pages** — `.github/workflows/deploy.yml` builds with `GITHUB_PAGES=true` and
+  publishes to `/Pyan-Thone/` (enable **Settings → Pages → Source: GitHub Actions**).
 
 ## Design tokens
 
