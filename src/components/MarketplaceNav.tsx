@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, Suspense, useEffect, useState } from "react";
 import { Button } from "./ui";
 import { Brand } from "./Brand";
+import { CartButton } from "./CartButton";
 import { useRole } from "@/lib/session";
 import { cx } from "@/lib/util";
 
@@ -84,6 +85,7 @@ export function MarketplaceNav() {
   ];
   const sellHref = isSeller ? "/seller/dashboard" : "/seller/login";
   const sellLabel = isSeller ? "Dashboard" : "Sell an item";
+  const profileHref = isSeller ? "/seller/profile" : "/buyer/profile";
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-surface/90 backdrop-blur">
@@ -122,6 +124,16 @@ export function MarketplaceNav() {
               Orders
             </Link>
           )}
+          {role && (
+            <Link
+              href={profileHref}
+              aria-label="Your profile"
+              className="hidden h-8 w-8 place-items-center rounded-full bg-action-soft text-[12px] font-bold text-action hover:bg-action hover:text-white sm:grid"
+            >
+              {isSeller ? "KA" : "MS"}
+            </Link>
+          )}
+          <CartButton />
           <Button href={sellHref} size="sm" className="hidden sm:inline-flex">
             {sellLabel}
           </Button>
@@ -167,6 +179,18 @@ export function MarketplaceNav() {
               Orders
             </Link>
           )}
+          {role && (
+            <Link
+              href={profileHref}
+              className="block rounded-control px-2 py-2 text-[15px] text-ink-secondary hover:bg-page"
+              onClick={() => setOpen(false)}
+            >
+              My profile
+            </Link>
+          )}
+          <div onClick={() => setOpen(false)}>
+            <CartButton withLabel className="px-2" />
+          </div>
           <div className="mt-2 lg:hidden">
             <Suspense fallback={<SearchFieldFallback />}>
               <SearchField />

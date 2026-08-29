@@ -78,6 +78,34 @@ export const REVIEWS = [
   { stars: 5, text: "Fast delivery and a very responsive seller.", author: "Ko Min", when: "1 month ago" },
 ];
 
+/** Completed sales shown on the seller profile as proof of track record. */
+export const SOLD_LISTINGS = [
+  { id: "sold-iphone-13", title: "iPhone 13 · 128GB", price: 930_000, soldWhen: "2 weeks ago", condition: "Like New" as Condition, buyer: "Ma Su", rating: 5 },
+  { id: "sold-xm5", title: "Sony WH-1000XM5", price: 520_000, soldWhen: "1 month ago", condition: "Good" as Condition, buyer: "Ko Min", rating: 5 },
+  { id: "sold-ipad-air", title: "iPad Air (4th gen)", price: 640_000, soldWhen: "2 months ago", condition: "Good" as Condition, buyer: "Hnin Ei", rating: 4 },
+  { id: "sold-switch", title: "Nintendo Switch OLED", price: 410_000, soldWhen: "3 months ago", condition: "Like New" as Condition, buyer: "Alex", rating: 5 },
+];
+
+export const BUYER = {
+  name: "Ma Su",
+  phone: "+95 9 765 432 100",
+  email: "ma.su@example.com",
+  memberSince: "March 2025",
+  city: "Yangon",
+  verifications: ["Email verified", "Phone verified"],
+  stats: [
+    { label: "Orders", value: "6" },
+    { label: "Saved items", value: "3" },
+    { label: "Reviews given", value: "4" },
+  ],
+};
+
+export const BUYER_ORDERS = [
+  { item: "MacBook Air M1", seller: "Ko Aung", status: "In transit", ref: "PYT-20491" },
+  { item: "Sony XM5 Headphones", seller: "Hnin Ei", status: "Delivered", ref: "PYT-20388" },
+  { item: "Nike Pegasus 40", seller: "Ma Su", status: "Delivered", ref: "PYT-20210" },
+];
+
 export const SELLER_METRICS = [
   { label: "Revenue", value: "850,000 MMK", delta: "+12% this month" },
   { label: "Orders", value: "12", delta: "3 need action" },

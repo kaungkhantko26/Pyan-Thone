@@ -16,7 +16,12 @@ export default function SellerDashboard() {
               Good morning, {SELLER.name} · {SELLER.shop}
             </p>
           </div>
-          <Button href="/seller/listing-preview">+ Add product</Button>
+          <div className="flex gap-2">
+            <Button href="/seller/profile" variant="secondary">
+              View my profile
+            </Button>
+            <Button href="/seller/products/new">+ Add product</Button>
+          </div>
         </div>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -62,10 +67,13 @@ export default function SellerDashboard() {
         </div>
 
         <section className="mt-10">
-          <h2 className="pyt-section-title">Your listings</h2>
+          <div className="flex items-baseline justify-between">
+            <h2 className="pyt-section-title">Your listings</h2>
+            <span className="text-[13px] text-ink-muted">Tap a card to edit</span>
+          </div>
           <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
             {listings.map((p) => (
-              <ProductCard key={p.id} product={p} />
+              <ProductCard key={p.id} product={p} href={`/seller/products/${p.id}/edit`} />
             ))}
           </div>
         </section>

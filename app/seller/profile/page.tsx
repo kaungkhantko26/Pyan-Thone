@@ -1,2 +1,4 @@
 import { SellerProfile } from "@/components/SellerProfile";
-export default function Page() { return <SellerProfile />; }
+export default function Page() {
+  return <SellerProfile owner />;
+}

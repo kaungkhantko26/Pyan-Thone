@@ -30,11 +30,11 @@ export default function ListingPreview() {
               ● Condition · {product.condition} — Minor scratches · Battery health 89% · No repair history
             </div>
             <div className="mt-5 space-y-3">
-              <Button full href="/seller/dashboard">
-                Publish listing
-              </Button>
-              <Button full variant="secondary" href="/seller/dashboard">
+              <Button full href={`/seller/products/${product.id}/edit`}>
                 Continue editing
+              </Button>
+              <Button full variant="secondary" href="/buyer/product/iphone-14-pro">
+                View live listing
               </Button>
             </div>
           </div>

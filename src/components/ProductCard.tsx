@@ -3,10 +3,10 @@ import { Product, conditionTone } from "@/lib/data";
 import { cx, mmk } from "@/lib/util";
 import { PhotoTile } from "./ui";
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({ product, href }: { product: Product; href?: string }) {
   return (
     <Link
-      href={`/buyer/product/${product.id}`}
+      href={href ?? `/buyer/product/${product.id}`}
       className="group flex flex-col overflow-hidden rounded-card border border-line bg-surface shadow-subtle transition hover:-translate-y-0.5 hover:shadow-card"
     >
       <PhotoTile className="aspect-[4/3] w-full rounded-none" />
